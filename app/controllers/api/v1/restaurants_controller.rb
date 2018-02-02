@@ -16,7 +16,7 @@ class Api::V1::RestaurantsController < ApplicationController
   def destroy
     @restaurant = Restaurant.find(params[:id])
     @restaurant.destroy
-    render json: { message: "Successfully Deleted #{@restaurant.id}"}
+    render json: { message: "Successfully Deleted Restaurant #{@restaurant.id}"}
   end
 
 end
