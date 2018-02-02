@@ -1,9 +1,11 @@
 class Api::V1::RequestController < ApplicationController
 
   def fetch_data
+    offset = (Restaurant.count/50.0).ceil * 50 + 1
+
     resp = RestClient::Request.execute(
       method:  :get,
-      url:     'https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=40.705353&longitude=-74.014003&limit=50',
+      url:     "https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=40.705353&longitude=-74.014003&limit=50&offset=#{offset}",
       headers:
       {
         'Authorization' => "Bearer Wua9tvPsWwGGyMB-InHKZfE-ZkzjwGZu3zdtO_AwUvY-UEmT_hb774Fvd0h0W53u04Rhqt3ZqTwn-X5mip89zdh50gqcCDKvnUocoLcx3WzhIGNMd8jMKSJVuN9wWnYx",

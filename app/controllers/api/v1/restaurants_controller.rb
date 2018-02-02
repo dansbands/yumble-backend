@@ -11,7 +11,12 @@ class Api::V1::RestaurantsController < ApplicationController
 
   def create
     restaurant = Restauarant.create(params[:name])
+  end
 
+  def destroy
+    @restaurant = Restaurant.find(params[:id])
+    @restaurant.destroy
+    render json: { message: "Successfully Deleted #{@restaurant.id}"}
   end
 
 end
