@@ -4,7 +4,7 @@ class Api::V1::RequestController < ApplicationController
 # take in the params, iterate over them, create queries from those with values
 # concat them to the query
 
-# interpolate search term, latitude, longitude, do this on front end first 
+# interpolate search term, latitude, longitude, do this on front end first
 
   def fetch_data
     # byebug
@@ -13,6 +13,19 @@ class Api::V1::RequestController < ApplicationController
     new_params = ""
     radius = params["radius"].to_i
     price = params["price"].to_i
+    latitude = params["latitude"].to_f
+    longitude = params["longitude"].to_f
+    term = "restaurant"
+
+    if params["term"] != ""
+      term = params["term"]
+    end
+
+    if term != "restaurant"
+      new_params += "&term=#{term}+restaurant"
+    else
+      new_params += "&term=restaurant"
+    end
 
     if radius > 0
       new_params += "&radius=#{radius}"
@@ -22,10 +35,24 @@ class Api::V1::RequestController < ApplicationController
       new_params += "&price=#{price}"
     end
 
+    if params["latitude"] != "0"
+      new_params += "&latitude=#{latitude}"
+    else
+      new_params += "&latitude=40.705353"
+    end
+    #
+    if params["longitude"] != "0"
+      new_params += "&longitude=#{longitude}"
+    else
+      new_params += "&longitude=-74.014003"
+    end
+
+
+
     # byebug
     resp = RestClient::Request.execute(
       method:  :get,
-      url:     "https://api.yelp.com/v3/businesses/search?term=restaurant&latitude=40.705353&longitude=-74.014003&limit=50&offset=#{offset}#{new_params}",
+      url:     "https://api.yelp.com/v3/businesses/search?&limit=50&offset=#{offset}#{new_params}",
       headers:
       {
         'Authorization' => "Bearer Wua9tvPsWwGGyMB-InHKZfE-ZkzjwGZu3zdtO_AwUvY-UEmT_hb774Fvd0h0W53u04Rhqt3ZqTwn-X5mip89zdh50gqcCDKvnUocoLcx3WzhIGNMd8jMKSJVuN9wWnYx",
