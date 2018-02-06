@@ -12,7 +12,7 @@ class Api::V1::AuthController < ApplicationController
 
   def show
     if current_user
-      render json: {id: current_user.id, username: current_user.username, token: issue_token(current_user)}
+      render json: {id: current_user.id, username: current_user.username, user: current_user, token: issue_token(current_user)}
     else
       render ({json: {error: 'Token is not valid'}, status: 401})
     end

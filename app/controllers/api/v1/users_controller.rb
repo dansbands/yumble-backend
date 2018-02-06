@@ -13,6 +13,8 @@ class Api::V1::UsersController < ApplicationController
       saved_restaurants: user.saved_restaurants.map do |r|
         {
           id: r.id,
+          user_id: user.id,
+          username: user.username,
           restaurant_id: r.restaurant_id,
           name: r.name,
           image_url: r.image_url,
@@ -38,7 +40,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def create
-    user = User.new(username: params[:username], password: params[:password])
+    user = User.new(firstname: params[:firstname], lastname: params[:lastname], username: params[:username], password: params[:password])
     if user.save
       render json: user
     else
