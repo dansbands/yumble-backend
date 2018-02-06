@@ -12,7 +12,7 @@ class Api::V1::SavedRestaurantsController < ApplicationController
   def create
     e = params
     # byebug
-    restaurant = SavedRestaurant.new({ user_id: 1, restaurant_id: e["id"], name: e["name"], image_url: e["image_url"], is_closed: e["is_closed"], url: e["url"], review_count: e["review_count"], categories: e["categories"], rating: e["rating"], latitude: e["latitude"], longitude: e["longitude"], transactions: e["transactions"], price: e["price"], location: e["location"],  phone: e["phone"], display_address_1: e["display_address_1"], display_address_2: e["display_address_2"], display_phone: e["display_phone"], distance: e["distance"] })
+    restaurant = SavedRestaurant.new({ user_id: e["user_id"], restaurant_id: e["id"], name: e["name"], image_url: e["image_url"], is_closed: e["is_closed"], url: e["url"], review_count: e["review_count"], categories: e["categories"], rating: e["rating"], latitude: e["latitude"], longitude: e["longitude"], transactions: e["transactions"], price: e["price"], location: e["location"],  phone: e["phone"], display_address_1: e["display_address_1"], display_address_2: e["display_address_2"], display_phone: e["display_phone"], distance: e["distance"] })
     # byebug
     if restaurant.save
       render json: restaurant

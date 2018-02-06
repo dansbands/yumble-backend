@@ -12,6 +12,7 @@ class Api::V1::UsersController < ApplicationController
       username: user.username,
       saved_restaurants: user.saved_restaurants.map do |r|
         {
+          id: r.id,
           restaurant_id: r.restaurant_id,
           name: r.name,
           image_url: r.image_url,
