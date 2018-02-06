@@ -42,7 +42,7 @@ class Api::V1::UsersController < ApplicationController
   def create
     user = User.new(firstname: params[:firstname], lastname: params[:lastname], username: params[:username], password: params[:password])
     if user.save
-      render json: user
+      render json: {id: user.id, username: user.username, user: user, token: issue_token(user)}
     else
       render json: { errors: user.errors.full_messages }, status: 422
     end
