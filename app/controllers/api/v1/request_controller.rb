@@ -9,13 +9,20 @@ class Api::V1::RequestController < ApplicationController
   def fetch_data
     # byebug
     # offset = (Restaurant.count/50.0).ceil * 50 + 1
-    offset = 5
+    user = User.find_by(id: params["user"])
+    # byebug
+    if user.requests.last
+      old_params = user.requests.last.params
+      offset = user.requests.last.offset
+    end
+
     new_params = ""
     radius = params["radius"].to_i
     price = params["price"].to_i
     latitude = params["latitude"].to_f
     longitude = params["longitude"].to_f
     term = "restaurant"
+
 
     if params["term"] != ""
       term = params["term"]
@@ -47,6 +54,17 @@ class Api::V1::RequestController < ApplicationController
       new_params += "&longitude=-74.014003"
     end
 
+
+    #this should be user.restaurants.destroy_all with a dependent:destroy_all in the model
+
+    if new_params != old_params
+      Restaurant.destroy_all
+      offset = 0
+    end
+
+    if new_params == old_params
+      offset += 50
+    end
 
 
     # byebug
@@ -81,6 +99,17 @@ class Api::V1::RequestController < ApplicationController
         display_phone: e["display_phone"],
         distance: e["distance"] })
     }
+
+
+
+    if businesses.length < 50
+      offset = 0
+    end
+
+    request = Request.create(params: new_params, user_id: params["user"], offset: offset)
+
+
+
 
      render json: parsed_resp, status: 200
   end
