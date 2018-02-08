@@ -10,6 +10,8 @@ class Api::V1::UsersController < ApplicationController
     user_json = {
       id: user.id,
       username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
       saved_restaurants: user.saved_restaurants.map do |r|
         {
           id: r.id,
