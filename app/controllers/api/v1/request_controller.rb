@@ -1,16 +1,8 @@
 class Api::V1::RequestController < ApplicationController
-# reset offset on new search parameters
-# perhaps make a new request as the restaurant count diminishes
-# take in the params, iterate over them, create queries from those with values
-# concat them to the query
-
-# interpolate search term, latitude, longitude, do this on front end first
-
   def fetch_data
-    # byebug
     # offset = (Restaurant.count/50.0).ceil * 50 + 1
     user = User.find_by(id: params["user"])
-    # byebug
+
     if user.requests.last
       old_params = user.requests.last.params
       offset = user.requests.last.offset
@@ -58,7 +50,7 @@ class Api::V1::RequestController < ApplicationController
     #this should be user.restaurants.destroy_all with a dependent:destroy_all in the model
 
     if new_params != old_params
-      Restaurant.destroy_all
+      user.restaurants.destroy_all
       offset = 0
     end
 
@@ -80,6 +72,7 @@ class Api::V1::RequestController < ApplicationController
     parsed_resp = JSON.parse(resp)
     businesses = parsed_resp["businesses"].map { |e|
       Restaurant.create({
+        user_id: user.id,
         restaurant_id: e["id"],
         name: e["name"],
         image_url: e["image_url"],
@@ -100,17 +93,14 @@ class Api::V1::RequestController < ApplicationController
         distance: e["distance"] })
     }
 
-
-
     if businesses.length < 50
       offset = 0
     end
 
     request = Request.create(params: new_params, user_id: params["user"], offset: offset)
 
+    user_restaurants = user.restaurants
 
-
-
-     render json: parsed_resp, status: 200
+    render json: user_restaurants, status: 200
   end
 end
