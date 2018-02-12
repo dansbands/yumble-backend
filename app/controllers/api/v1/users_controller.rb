@@ -10,6 +10,7 @@ class Api::V1::UsersController < ApplicationController
         lastname: user.lastname,
         photo_url: user.photo_url,
         location: user.location,
+        current_friend: user.current_friend,
         restaurants: user.restaurants.map do |r|
           {
             id: r.id,
@@ -78,6 +79,7 @@ class Api::V1::UsersController < ApplicationController
       lastname: user.lastname,
       photo_url: user.photo_url,
       location: user.location,
+      current_friend: user.current_friend,
       restaurants: user.restaurants.map do |r|
         {
           id: r.id,
@@ -156,6 +158,6 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:firstname, :lastname, :username, :password, :location, :photo_url)
+    params.permit(:firstname, :lastname, :username, :password, :location, :photo_url, :current_friend)
   end
 end
