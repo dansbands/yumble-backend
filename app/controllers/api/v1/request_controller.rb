@@ -73,7 +73,7 @@ class Api::V1::RequestController < ApplicationController
     businesses = parsed_resp["businesses"].map { |e|
       Restaurant.create({
         user_id: user.id,
-        restaurant_id: e["id"],
+        yelp_id: e["id"],
         name: e["name"],
         image_url: e["image_url"],
         is_closed: e["is_closed"],

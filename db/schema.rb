@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180208162035) do
+ActiveRecord::Schema.define(version: 20180211175155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "common_saved_restaurants", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "saved_restaurant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["saved_restaurant_id"], name: "index_common_saved_restaurants_on_saved_restaurant_id"
+    t.index ["user_id"], name: "index_common_saved_restaurants_on_user_id"
+  end
 
   create_table "requests", force: :cascade do |t|
     t.bigint "user_id"
@@ -25,7 +34,7 @@ ActiveRecord::Schema.define(version: 20180208162035) do
   end
 
   create_table "restaurants", force: :cascade do |t|
-    t.string "restaurant_id"
+    t.string "yelp_id"
     t.string "name"
     t.string "image_url"
     t.boolean "is_closed"
@@ -71,6 +80,7 @@ ActiveRecord::Schema.define(version: 20180208162035) do
     t.decimal "distance"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "yelp_id"
     t.index ["user_id"], name: "index_saved_restaurants_on_user_id"
   end
 
@@ -87,6 +97,8 @@ ActiveRecord::Schema.define(version: 20180208162035) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "common_saved_restaurants", "saved_restaurants"
+  add_foreign_key "common_saved_restaurants", "users"
   add_foreign_key "requests", "users"
   add_foreign_key "restaurants", "users"
   add_foreign_key "saved_restaurants", "users"

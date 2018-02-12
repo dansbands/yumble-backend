@@ -20,7 +20,7 @@ class CreateSavedRestaurants < ActiveRecord::Migration[5.1]
       t.string :display_address_1
       t.string :display_address_2
       t.decimal :distance
-      
+
       t.timestamps
     end
   end

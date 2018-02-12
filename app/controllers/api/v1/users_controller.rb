@@ -8,12 +8,14 @@ class Api::V1::UsersController < ApplicationController
         username: user.username,
         firstname: user.firstname,
         lastname: user.lastname,
+        photo_url: user.photo_url,
+        location: user.location,
         restaurants: user.restaurants.map do |r|
           {
             id: r.id,
             user_id: user.id,
             username: user.username,
-            restaurant_id: r.restaurant_id,
+            yelp_id: r.yelp_id,
             name: r.name,
             image_url: r.image_url,
             is_closed: r.is_closed,
@@ -38,7 +40,9 @@ class Api::V1::UsersController < ApplicationController
             id: r.id,
             user_id: user.id,
             username: user.username,
+            user_photo_url: user.photo_url,
             restaurant_id: r.restaurant_id,
+            yelp_id: r.yelp_id,
             name: r.name,
             image_url: r.image_url,
             is_closed: r.is_closed,
@@ -72,12 +76,14 @@ class Api::V1::UsersController < ApplicationController
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
+      photo_url: user.photo_url,
+      location: user.location,
       restaurants: user.restaurants.map do |r|
         {
           id: r.id,
           user_id: user.id,
           username: user.username,
-          restaurant_id: r.restaurant_id,
+          yelp_id: r.yelp_id,
           name: r.name,
           image_url: r.image_url,
           is_closed: r.is_closed,
@@ -103,6 +109,7 @@ class Api::V1::UsersController < ApplicationController
           user_id: user.id,
           username: user.username,
           restaurant_id: r.restaurant_id,
+          yelp_id: r.yelp_id,
           name: r.name,
           image_url: r.image_url,
           is_closed: r.is_closed,
@@ -133,5 +140,22 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { errors: user.errors.full_messages }, status: 422
     end
+  end
+
+  def update
+    user = User.find_by(id: params["id"])
+
+
+    if user && user.update(user_params)
+      render json: user, status: 200
+    else
+      render json: { errors: user.errors.full_messages }, status: 422
+    end
+  end
+
+  private
+
+  def user_params
+    params.permit(:firstname, :lastname, :username, :password, :location, :photo_url)
   end
 end
