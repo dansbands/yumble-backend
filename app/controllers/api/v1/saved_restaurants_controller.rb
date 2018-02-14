@@ -11,11 +11,15 @@ class Api::V1::SavedRestaurantsController < ApplicationController
   #
   def create
     e = params
+    # .find_by(yelp_id: params["yelp_id"])
+    rests = SavedRestaurant.select { |r| r.yelp_id == params["yelp_id"] && r.user_id != params["user_id"] }
+    users = rests.map { |r| r.user_id }
     # byebug
     restaurant = SavedRestaurant.new({
+      other_users: users,
       user_id: e["user_id"],
       restaurant_id: e["id"],
-      yelp_id: e["yelp_id"], 
+      yelp_id: e["yelp_id"],
       name: e["name"],
       image_url: e["image_url"],
       is_closed: e["is_closed"],
@@ -49,3 +53,13 @@ class Api::V1::SavedRestaurantsController < ApplicationController
   end
 
 end
+
+# restaurants = []
+# dan.saved_restaurants.map { |r|
+#   restaurant = r.yelp_id
+#   jake.saved_restaurants.collect { |sr|
+#     if sr.yelp_id == restaurant
+#       restaurants.push(sr)
+#     end
+#    }
+#  }

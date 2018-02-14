@@ -128,7 +128,8 @@ class Api::V1::UsersController < ApplicationController
           display_address_1: r.display_address_1,
           display_address_2: r.display_address_2,
           display_phone: r.display_phone,
-          distance: r.distance
+          distance: r.distance,
+          other_users: r.other_users
         }
       end
       }
