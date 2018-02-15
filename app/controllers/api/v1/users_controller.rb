@@ -11,6 +11,9 @@ class Api::V1::UsersController < ApplicationController
         photo_url: user.photo_url,
         location: user.location,
         current_friend: user.current_friend,
+        email: user.email,
+        phone: user.phone,
+        bio: user.bio,
         restaurants: user.restaurants.map do |r|
           {
             id: r.id,
@@ -80,6 +83,9 @@ class Api::V1::UsersController < ApplicationController
       photo_url: user.photo_url,
       location: user.location,
       current_friend: user.current_friend,
+      email: user.email,
+      phone: user.phone,
+      bio: user.bio,
       restaurants: user.restaurants.map do |r|
         {
           id: r.id,
@@ -147,7 +153,7 @@ class Api::V1::UsersController < ApplicationController
 
   def update
     user = User.find_by(id: params["id"])
-
+    # byebug
 
     if user && user.update(user_params)
       render json: user, status: 200
@@ -159,6 +165,6 @@ class Api::V1::UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:firstname, :lastname, :username, :password, :location, :photo_url, :current_friend)
+    params.permit(:firstname, :lastname, :username, :password, :location, :photo_url, :current_friend, :email, :phone, :bio)
   end
 end
